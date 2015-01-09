@@ -31,7 +31,6 @@ import com.dynamia.tools.web.ui.ActionToolbar;
 import com.dynamia.tools.web.ui.MessageType;
 import com.dynamia.tools.web.ui.UIMessages;
 import com.dynamia.tools.web.util.Callback;
-import org.zkoss.zk.ui.Component;
 
 /**
  *
