@@ -1,4 +1,4 @@
-package com.dynamia.modules.importacion;
+package tools.dynamia.modules.importacion;
 
 public class ImportOperationException extends RuntimeException {
 

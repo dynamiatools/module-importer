@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.dynamia.modules.importacion.ui;
+package tools.dynamia.modules.importacion.ui;
 
 import java.util.List;
 import java.util.Map;
@@ -24,18 +24,17 @@ import org.zkoss.zul.Progressmeter;
 import org.zkoss.zul.South;
 import org.zkoss.zul.Window;
 
-import com.dynamia.modules.importacion.ImportAction;
-import com.dynamia.modules.importacion.ImportOperation;
-import com.dynamia.tools.integration.ProgressMonitor;
-import com.dynamia.tools.viewers.util.Viewers;
-import com.dynamia.tools.viewers.zk.table.TableView;
-import com.dynamia.tools.web.actions.ActionEvent;
-import com.dynamia.tools.web.actions.ActionEventBuilder;
-import com.dynamia.tools.web.ui.ActionToolbar;
-import com.dynamia.tools.web.ui.MessageType;
-import com.dynamia.tools.web.ui.UIMessages;
-import com.dynamia.tools.web.util.Callback;
-import com.dynamia.tools.web.util.ZKUtil;
+import tools.dynamia.actions.ActionEvent;
+import tools.dynamia.actions.ActionEventBuilder;
+import tools.dynamia.integration.ProgressMonitor;
+import tools.dynamia.modules.importacion.ImportAction;
+import tools.dynamia.modules.importacion.ImportOperation;
+import tools.dynamia.ui.Callback;
+import tools.dynamia.ui.MessageType;
+import tools.dynamia.ui.UIMessages;
+import tools.dynamia.viewers.util.Viewers;
+import tools.dynamia.zk.actions.ActionToolbar;
+import tools.dynamia.zk.viewers.table.TableView;
 
 /**
  *

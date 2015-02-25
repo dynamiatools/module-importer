@@ -3,13 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.dynamia.modules.importacion;
+package tools.dynamia.modules.importacion;
 
-import com.dynamia.modules.importacion.ui.Importer;
-import com.dynamia.tools.web.actions.AbstractAction;
-import com.dynamia.tools.web.actions.ActionEvent;
-import com.dynamia.tools.web.actions.ActionRenderer;
-import com.dynamia.tools.web.crud.actions.renderers.ToolbarbuttonActionRenderer;
+import tools.dynamia.actions.AbstractAction;
+import tools.dynamia.actions.ActionEvent;
+import tools.dynamia.actions.ActionRenderer;
+import tools.dynamia.modules.importacion.ui.Importer;
+import tools.dynamia.zk.actions.ToolbarbuttonActionRenderer;
 
 /**
  *

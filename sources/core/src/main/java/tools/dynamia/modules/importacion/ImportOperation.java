@@ -1,16 +1,14 @@
-package com.dynamia.modules.importacion;
+package tools.dynamia.modules.importacion;
 
-import org.apache.commons.lang.time.DateUtils;
 import org.apache.commons.lang.time.DurationFormatUtils;
 
-import com.dynamia.modules.importacion.ui.Importer;
-import com.dynamia.tools.commons.DateTimeUtils;
-import com.dynamia.tools.domain.ValidationError;
-import com.dynamia.tools.integration.ProgressMonitor;
-import com.dynamia.tools.integration.ProgressMonitorCallback;
-import com.dynamia.tools.web.ui.MessageType;
-import com.dynamia.tools.web.ui.UIMessages;
-import com.dynamia.tools.web.util.LongOperation;
+import tools.dynamia.domain.ValidationError;
+import tools.dynamia.integration.ProgressMonitor;
+import tools.dynamia.integration.ProgressMonitorCallback;
+import tools.dynamia.modules.importacion.ui.Importer;
+import tools.dynamia.ui.MessageType;
+import tools.dynamia.ui.UIMessages;
+import tools.dynamia.zk.util.LongOperation;
 
 public abstract class ImportOperation extends LongOperation implements ProgressMonitorCallback {
 
