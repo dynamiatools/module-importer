@@ -26,10 +26,10 @@ import org.zkoss.zul.Window;
 
 import tools.dynamia.actions.ActionEvent;
 import tools.dynamia.actions.ActionEventBuilder;
+import tools.dynamia.commons.Callback;
 import tools.dynamia.integration.ProgressMonitor;
 import tools.dynamia.modules.importacion.ImportAction;
 import tools.dynamia.modules.importacion.ImportOperation;
-import tools.dynamia.ui.Callback;
 import tools.dynamia.ui.MessageType;
 import tools.dynamia.ui.UIMessages;
 import tools.dynamia.viewers.util.Viewers;
