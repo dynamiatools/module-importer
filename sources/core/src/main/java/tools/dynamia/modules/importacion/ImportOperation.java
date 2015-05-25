@@ -3,14 +3,15 @@ package tools.dynamia.modules.importacion;
 import org.apache.commons.lang.time.DurationFormatUtils;
 
 import tools.dynamia.domain.ValidationError;
+import tools.dynamia.integration.ProgressEvent;
 import tools.dynamia.integration.ProgressMonitor;
-import tools.dynamia.integration.ProgressMonitorCallback;
+import tools.dynamia.integration.ProgressMonitorListener;
 import tools.dynamia.modules.importacion.ui.Importer;
 import tools.dynamia.ui.MessageType;
 import tools.dynamia.ui.UIMessages;
 import tools.dynamia.zk.util.LongOperation;
 
-public abstract class ImportOperation extends LongOperation implements ProgressMonitorCallback {
+public abstract class ImportOperation extends LongOperation implements ProgressMonitorListener {
 
 	private ProgressMonitor monitor;
 	private Importer importer;
@@ -25,6 +26,7 @@ public abstract class ImportOperation extends LongOperation implements ProgressM
 		super();
 		this.name = name;
 		this.importer = importer;
+		init();
 	}
 
 	public ImportOperation(String name, Importer importer, long updateProgressRate) {
@@ -32,10 +34,16 @@ public abstract class ImportOperation extends LongOperation implements ProgressM
 		this.name = name;
 		this.importer = importer;
 		this.updateProgressRate = updateProgressRate;
+		init();
+	}
+
+	private void init() {
+		execute(() -> doImport());
+		onFinish(() -> importFinish());
 	}
 
 	@Override
-	public void progressChanged() {
+	public void progressChanged(ProgressEvent evt) {
 		try {
 
 			currentTime = System.currentTimeMillis();
@@ -47,21 +55,19 @@ public abstract class ImportOperation extends LongOperation implements ProgressM
 			long elapsedTime = currentTime - startTime;
 			if ((currentTime - lastCheckTime) >= updateProgressRate) {
 				lastCheckTime = currentTime;
-				
+
 				double position = monitor.getCurrent();
 				double total = monitor.getMax();
-				
-				if (startTime == 0)			{
+
+				if (startTime == 0) {
 					startTime = currentTime;
 				}
 
-				
-				long estimatedRemaining = (long) (elapsedTime / position * (total-position) );
-				
-				
-				
+				long estimatedRemaining = (long) (elapsedTime / position * (total - position));
+
 				activate();
-				monitor.setMessage(monitor.getMessage() + " - Faltan <b>" + DurationFormatUtils.formatDuration(estimatedRemaining,"HH:mm:ss")+"</b> (h:m:s)");
+				monitor.setMessage(monitor.getMessage() + " - Faltan <b>"
+						+ DurationFormatUtils.formatDuration(estimatedRemaining, "HH:mm:ss") + "</b> (h:m:s)");
 				importer.updateProgress(monitor);
 				deactivate();
 			}
@@ -71,8 +77,7 @@ public abstract class ImportOperation extends LongOperation implements ProgressM
 		}
 	}
 
-	@Override
-	protected void execute() throws InterruptedException {
+	private void doImport() {
 		monitor = new ProgressMonitor(this);
 		try {
 			if (checkCurrentOperation()) {
@@ -89,7 +94,7 @@ public abstract class ImportOperation extends LongOperation implements ProgressM
 				cancel();
 			}
 		} catch (InterruptedException e) {
-			throw e;
+			throw new ImportOperationException(e);
 		} catch (ValidationError e) {
 			try {
 				activate();
@@ -108,24 +113,19 @@ public abstract class ImportOperation extends LongOperation implements ProgressM
 		cancelledGracefully = true;
 		monitor.setMax(-1);
 		monitor.setCurrent(-1);
+		monitor.stop();
 	}
 
-	@Override
-	protected final void onFinish() {
+	private void importFinish() {
 		if (!cancelledGracefully) {
 			onFinish(monitor);
 		} else {
-			onCancel();
+			onCancel(monitor);
 		}
 	}
 
 	protected void onFinish(ProgressMonitor monitor) {
 		// TODO Auto-generated method stub
-	}
-
-	@Override
-	protected final void onCancel() {
-		onCancel(monitor);
 	}
 
 	protected void onCancel(ProgressMonitor monitor) {

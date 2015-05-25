@@ -98,7 +98,7 @@ public class Importer extends Window implements ActionEventBuilder {
 				}
 				progress.setValue(value);
 				progressLabel.setValue(monitor.getMessage());
-				
+
 				Clients.showBusy(layout.getCenter().getFirstChild(), monitor.getMessage());
 			} catch (Exception e) {
 				// TODO: handle exception
@@ -145,14 +145,7 @@ public class Importer extends Window implements ActionEventBuilder {
 					return;
 				}
 
-				UIMessages.showQuestion("Esta seguro que desea cancelar: " + currentOperation.getName() + "?", new Callback() {
-
-					@Override
-					public void doSomething() {
-						cancel();
-
-					}
-				});
+				UIMessages.showQuestion("Esta seguro que desea cancelar: " + currentOperation.getName() + "?", () -> cancel());
 
 			}
 		});
