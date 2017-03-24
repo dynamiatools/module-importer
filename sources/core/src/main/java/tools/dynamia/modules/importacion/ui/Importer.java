@@ -5,12 +5,13 @@
  */
 package tools.dynamia.modules.importacion.ui;
 
+import java.io.InputStream;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.function.BiConsumer;
 
 import org.zkoss.zk.ui.Component;
-import org.zkoss.zk.ui.event.Event;
-import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zk.ui.util.Clients;
 import org.zkoss.zul.Borderlayout;
@@ -19,6 +20,7 @@ import org.zkoss.zul.Center;
 import org.zkoss.zul.East;
 import org.zkoss.zul.Hlayout;
 import org.zkoss.zul.Label;
+import org.zkoss.zul.ListModel;
 import org.zkoss.zul.North;
 import org.zkoss.zul.Progressmeter;
 import org.zkoss.zul.South;
@@ -26,14 +28,19 @@ import org.zkoss.zul.Window;
 
 import tools.dynamia.actions.ActionEvent;
 import tools.dynamia.actions.ActionEventBuilder;
-import tools.dynamia.commons.Callback;
+import tools.dynamia.commons.StringUtils;
 import tools.dynamia.integration.ProgressMonitor;
 import tools.dynamia.modules.importacion.ImportAction;
+import tools.dynamia.modules.importacion.ImportExcelAction;
 import tools.dynamia.modules.importacion.ImportOperation;
 import tools.dynamia.ui.MessageType;
 import tools.dynamia.ui.UIMessages;
+import tools.dynamia.viewers.Field;
+import tools.dynamia.viewers.ViewDescriptor;
+import tools.dynamia.viewers.impl.DefaultViewDescriptor;
 import tools.dynamia.viewers.util.Viewers;
 import tools.dynamia.zk.actions.ActionToolbar;
+import tools.dynamia.zk.util.ZKUtil;
 import tools.dynamia.zk.viewers.table.TableView;
 
 /**
@@ -54,23 +61,14 @@ public class Importer extends Window implements ActionEventBuilder {
 	private Button btnProcesar;
 	private Button btnCancelar;
 
+	private ViewDescriptor tableDescriptor = new DefaultViewDescriptor(null, "table");
+
 	private boolean operationRunning;
+
+	private TableView table;
 
 	public Importer() {
 		buildLayout();
-
-	}
-
-	public void initTable(Class valueClass, List value) {
-
-		layout.getCenter().getChildren().clear();
-
-		TableView table = (TableView) Viewers.getView(valueClass, "table", value);
-		table.setVflex(true);
-		table.setSizedByContent(true);
-
-		layout.getCenter().appendChild(table);
-		progress.setValue(100);
 	}
 
 	@Override
@@ -126,35 +124,23 @@ public class Importer extends Window implements ActionEventBuilder {
 
 		this.btnProcesar = new Button("Procesar datos importados");
 		btnProcesar.setStyle("margin:4px");
-		btnProcesar.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
-
-			@Override
-			public void onEvent(Event event) throws Exception {
-				processImportedData();
-
-			}
-		});
+		btnProcesar.addEventListener(Events.ON_CLICK, event -> processImportedData());
 
 		this.btnCancelar = new Button("Cancelar");
 		btnCancelar.setStyle("margin:4px");
-		btnCancelar.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
-
-			@Override
-			public void onEvent(Event event) throws Exception {
-				if (currentOperation == null) {
-					return;
-				}
-
-				UIMessages.showQuestion("Esta seguro que desea cancelar: " + currentOperation.getName() + "?", () -> cancel());
-
+		btnCancelar.addEventListener(Events.ON_CLICK, event -> {
+			if (currentOperation == null) {
+				return;
 			}
+
+			UIMessages.showQuestion("Esta seguro que desea cancelar: " + currentOperation.getName() + "?",
+					() -> cancel());
+
 		});
 
 		progress.setHflex("1");
 		controls.appendChild(btnProcesar);
 		controls.appendChild(btnCancelar);
-		controls.appendChild(progress);
-		// controls.appendChild(progressLabel);
 
 		setOperationStatus(false);
 	}
@@ -163,18 +149,16 @@ public class Importer extends Window implements ActionEventBuilder {
 		if (currentAction != null) {
 
 			if (currentOperation != null) {
-				UIMessages.showMessage("Existe un proceso de importacion ejecuntandose en este momento", MessageType.WARNING);
+				UIMessages.showMessage("Existe un proceso de importacion ejecuntandose en este momento",
+						MessageType.WARNING);
 				return;
 			}
 
-			UIMessages.showQuestion("Esta seguro que desea procesar los datos importados? Esta accion puede tardar varios minutos.",
-					new Callback() {
-
-						@Override
-						public void doSomething() {
-							resetProgress();
-							currentAction.processImportedData(Importer.this);
-						}
+			UIMessages.showQuestion(
+					"Esta seguro que desea procesar los datos importados? Esta accion puede tardar varios minutos.",
+					() -> {
+						resetProgress();
+						currentAction.processImportedData(Importer.this);
 					});
 
 		} else {
@@ -209,6 +193,7 @@ public class Importer extends Window implements ActionEventBuilder {
 	public void setOperationStatus(boolean running) {
 		this.operationRunning = running;
 		checkRunning();
+		progress.setVisible(running);
 	}
 
 	@Override
@@ -237,4 +222,47 @@ public class Importer extends Window implements ActionEventBuilder {
 		return operationRunning;
 	}
 
+	public void addColumn(String name) {
+		String firstChar = StringUtils.getFirstCharacter(name).toLowerCase();
+		name = firstChar + name.substring(1);
+
+		tableDescriptor.addField(new Field(name));
+	}
+
+	public void addColumn(String name, String path) {
+		Field field = new Field(path);
+		field.setLabel(name);
+		tableDescriptor.addField(field);
+	}
+
+	public void initTable(List data) {
+		this.table = (TableView) Viewers.getView(tableDescriptor);
+
+		table.setSizedByContent(true);
+
+		if (data != null && !data.isEmpty()) {
+			table.setValue(data);
+		}
+
+		layout.getCenter().getChildren().clear();
+		layout.getCenter().appendChild(table);
+	}
+
+	public void clearTable() {
+		initTable(Collections.EMPTY_LIST);
+
+	}
+
+	public void show(String title) {
+		ZKUtil.showDialog(title, this, "90%", "90%");
+
+	}
+
+	public Object getSelected() {
+		if (table != null) {
+			return table.getSelected();
+		} else {
+			return null;
+		}
+	}
 }

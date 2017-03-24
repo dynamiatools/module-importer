@@ -8,6 +8,7 @@ package tools.dynamia.modules.importacion;
 import tools.dynamia.actions.AbstractAction;
 import tools.dynamia.actions.ActionEvent;
 import tools.dynamia.actions.ActionRenderer;
+import tools.dynamia.integration.ProgressMonitor;
 import tools.dynamia.modules.importacion.ui.Importer;
 import tools.dynamia.zk.actions.ToolbarbuttonActionRenderer;
 
@@ -16,6 +17,8 @@ import tools.dynamia.zk.actions.ToolbarbuttonActionRenderer;
  * @author mario_2
  */
 public abstract class ImportAction extends AbstractAction {
+	
+	private ProgressMonitor monitor;
 
 	@Override
 	public void actionPerformed(ActionEvent evt) {
@@ -31,6 +34,14 @@ public abstract class ImportAction extends AbstractAction {
 	@Override
 	public ActionRenderer getRenderer() {
 		return new ToolbarbuttonActionRenderer(true);
+	}
+	
+	public void setMonitor(ProgressMonitor monitor) {
+		this.monitor = monitor;
+	}
+	
+	public ProgressMonitor getMonitor() {
+		return monitor;
 	}
 
 }
