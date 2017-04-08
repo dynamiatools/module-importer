@@ -17,14 +17,17 @@ import tools.dynamia.zk.actions.ToolbarbuttonActionRenderer;
  * @author mario_2
  */
 public abstract class ImportAction extends AbstractAction {
-	
+
 	private ProgressMonitor monitor;
+	private boolean procesable = true;
 
 	@Override
 	public void actionPerformed(ActionEvent evt) {
 		Importer win = (Importer) evt.getSource();
 		actionPerformed(win);
-		win.setCurrentAction(this);
+		if (isProcesable()) {
+			win.setCurrentAction(this);
+		}
 	}
 
 	public abstract void actionPerformed(Importer importer);
@@ -35,13 +38,17 @@ public abstract class ImportAction extends AbstractAction {
 	public ActionRenderer getRenderer() {
 		return new ToolbarbuttonActionRenderer(true);
 	}
-	
+
 	public void setMonitor(ProgressMonitor monitor) {
 		this.monitor = monitor;
 	}
-	
+
 	public ProgressMonitor getMonitor() {
 		return monitor;
+	}
+
+	public boolean isProcesable() {
+		return procesable;
 	}
 
 }

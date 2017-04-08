@@ -235,6 +235,15 @@ public class Importer extends Window implements ActionEventBuilder {
 		tableDescriptor.addField(field);
 	}
 
+	public void addColumn(String name, String path, String reference) {
+		Field field = new Field(path);
+		field.setLabel(name);
+		field.setComponent("entityrefpicker");
+		field.addParam("entityAlias", reference);
+		tableDescriptor.addField(field);
+
+	}
+
 	public void initTable(List data) {
 		this.table = (TableView) Viewers.getView(tableDescriptor);
 
@@ -265,4 +274,5 @@ public class Importer extends Window implements ActionEventBuilder {
 			return null;
 		}
 	}
+
 }
