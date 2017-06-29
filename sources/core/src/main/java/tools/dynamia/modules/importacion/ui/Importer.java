@@ -238,7 +238,7 @@ public class Importer extends Window implements ActionEventBuilder {
 	public void addColumn(String name, String path, String reference) {
 		Field field = new Field(path);
 		field.setLabel(name);
-		field.setComponent("entityrefpicker");
+		field.setComponent("entityreflabel");
 		field.addParam("entityAlias", reference);
 		tableDescriptor.addField(field);
 
