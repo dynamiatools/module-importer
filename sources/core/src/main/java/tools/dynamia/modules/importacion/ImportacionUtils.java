@@ -7,8 +7,11 @@ package tools.dynamia.modules.importacion;
 
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
+import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.hssf.util.HSSFCellUtil;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.DataFormatter;
 import org.apache.poi.ss.usermodel.Row;
@@ -25,121 +28,134 @@ import tools.dynamia.integration.ProgressMonitor;
  */
 public class ImportacionUtils {
 
-	public static String getCellValue(Row row, int cellIndex) {
-		String value = null;
-		Cell cell = row.getCell(cellIndex);
-		if (cell != null) {
-			if (cell.getCellType() == Cell.CELL_TYPE_ERROR) {
-				value = null;
-			} else if (cell.getCellType() == Cell.CELL_TYPE_NUMERIC) {
-				DataFormatter df = new DataFormatter();
-				value = df.formatCellValue(cell);
-			} else {
-				value = cell.getStringCellValue();
-			}
-		}
-		if (value != null) {
-			value = value.trim();
-		}
-		return value;
-	}
+    public static String getCellValue(Row row, int cellIndex) {
+        String value = null;
+        Cell cell = row.getCell(cellIndex);
+        if (cell != null) {
+            if (cell.getCellType() == Cell.CELL_TYPE_ERROR) {
+                value = null;
+            } else if (cell.getCellType() == Cell.CELL_TYPE_NUMERIC) {
+                DataFormatter df = new DataFormatter();
+                value = df.formatCellValue(cell);
+            } else {
+                value = cell.getStringCellValue();
+            }
+        }
+        if (value != null) {
+            value = value.trim();
+        }
+        return value;
+    }
 
-	public static Object getCellValueObject(Row row, int cellIndex) {
-		Cell cell = row.getCell(cellIndex);
-		if (cell != null) {
-			switch (cell.getCellTypeEnum()) {
-			case BLANK:
-				return null;
-			case BOOLEAN:
-				return cell.getBooleanCellValue();
-			case STRING:
-				return cell.getStringCellValue();
-			case NUMERIC:
-				return cell.getNumericCellValue();
-			default:
-				return cell.getStringCellValue();
-			}
-		}
-		return null;
-	}
+    public static Object getCellValueObject(Row row, int cellIndex) {
+        Cell cell = row.getCell(cellIndex);
 
-	public static <T> List<T> importExcel(Class<T> clazz, InputStream excelFile, ProgressMonitor monitor,
-			ImportBeanParser<T> parser) throws Exception {
-		if (monitor == null) {
-			monitor = new ProgressMonitor();
-		}
+        if (cell != null) {
+            switch (cell.getCellTypeEnum()) {
+                case BLANK:
+                    return null;
+                case BOOLEAN:
+                    return cell.getBooleanCellValue();
+                case STRING:
+                    return cell.getStringCellValue();
+                case NUMERIC:
+                    return cell.getNumericCellValue();
+                default:
+                    return cell.getStringCellValue();
+            }
+        }
+        return null;
+    }
 
-		Workbook workbook = WorkbookFactory.create(excelFile);
-		Sheet sheet = workbook.getSheetAt(0);
-		monitor.setMax(sheet.getLastRowNum());
-		List<T> lineas = new ArrayList<>();
-		int filasOK = 0;
-		for (Row row : sheet) {
-			if (row.getRowNum() == 0) {
-				monitor.setMessage("Procesando Encabezados");
-			} else {
-				try {
-					T bean = parser.parse(row);
-					if (bean != null) {
-						if (!lineas.contains(bean)) {
-							lineas.add(bean);
-						}
-						filasOK++;
-						monitor.setMessage("Fila " + row.getRowNum() + " importada Ok");
-					}
-				} catch (ValidationError validationError) {
-					monitor.setMessage(
-							"Error importando fila " + row.getRowNum() + ". " + validationError.getMessage());
-				}
-			}
-			monitor.setCurrent(row.getRowNum());
-		}
+    public static Date getCellValueDate(Row row, int cellIndex) {
+        try {
+            Cell cell = row.getCell(cellIndex);
+            if (cell != null) {
+                return cell.getDateCellValue();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
-		return lineas;
-	}
+    public static <T> List<T> importExcel(Class<T> clazz, InputStream excelFile, ProgressMonitor monitor,
+                                          ImportBeanParser<T> parser) throws Exception {
+        if (monitor == null) {
+            monitor = new ProgressMonitor();
+        }
 
-	public static void readExcel(InputStream excelFile, ProgressMonitor monitor, ImportReader reader) throws Exception{
+        Workbook workbook = WorkbookFactory.create(excelFile);
+        Sheet sheet = workbook.getSheetAt(0);
+        monitor.setMax(sheet.getLastRowNum());
+        List<T> lineas = new ArrayList<>();
+        int filasOK = 0;
+        for (Row row : sheet) {
+            if (row.getRowNum() == 0) {
+                monitor.setMessage("Procesando Encabezados");
+            } else {
+                try {
+                    T bean = parser.parse(row);
+                    if (bean != null) {
+                        if (!lineas.contains(bean)) {
+                            lineas.add(bean);
+                        }
+                        filasOK++;
+                        monitor.setMessage("Fila " + row.getRowNum() + " importada Ok");
+                    }
+                } catch (ValidationError validationError) {
+                    monitor.setMessage(
+                            "Error importando fila " + row.getRowNum() + ". " + validationError.getMessage());
+                }
+            }
+            monitor.setCurrent(row.getRowNum());
+        }
 
-		if (monitor == null) {
-			monitor = new ProgressMonitor();
-		}
+        return lineas;
+    }
 
-		Workbook workbook = WorkbookFactory.create(excelFile);
-		Sheet sheet = workbook.getSheetAt(0);
-		monitor.setMax(sheet.getLastRowNum());
+    public static void readExcel(InputStream excelFile, ProgressMonitor monitor, ImportReader reader) throws Exception {
 
-		int filasOK = 0;
-		for (Row row : sheet) {
-			if (row.getRowNum() == 0) {
-				monitor.setMessage("Procesando Encabezados");
-			} else {
-				try {
-					reader.read(row);
-					filasOK++;
-					monitor.setMessage("Fila " + row.getRowNum() + " importada Ok");
-				} catch (ValidationError error) {
-					monitor.setMessage(
-							"Error importando fila " + row.getRowNum() + ". " + error.getMessage());
-					throw error;
-				}
-			}
-			monitor.setCurrent(row.getRowNum());
-		}
-	}
+        if (monitor == null) {
+            monitor = new ProgressMonitor();
+        }
 
-	public static void tryToParse(Row row, Object bean, String... fields) {
-		if (fields != null && fields.length > 0) {
-			for (int i = 0; i < fields.length; i++) {
-				try {
-					String fieldName = fields[i];
-					if (fieldName != null && !fieldName.isEmpty()) {
-						BeanUtils.setFieldValue(fieldName, bean, getCellValueObject(row, i));
-					}
-				} catch (Exception e) {
-					// TODO: handle exception
-				}
-			}
-		}
-	}
+        Workbook workbook = WorkbookFactory.create(excelFile);
+        Sheet sheet = workbook.getSheetAt(0);
+        monitor.setMax(sheet.getLastRowNum());
+
+        int filasOK = 0;
+        for (Row row : sheet) {
+            if (row.getRowNum() == 0) {
+                monitor.setMessage("Procesando Encabezados");
+            } else {
+                try {
+                    reader.read(row);
+                    filasOK++;
+                    monitor.setMessage("Fila " + row.getRowNum() + " importada Ok");
+                } catch (ValidationError error) {
+                    monitor.setMessage(
+                            "Error importando fila " + row.getRowNum() + ". " + error.getMessage());
+                    throw error;
+                }
+            }
+            monitor.setCurrent(row.getRowNum());
+        }
+    }
+
+    public static void tryToParse(Row row, Object bean, String... fields) {
+        if (fields != null && fields.length > 0) {
+            for (int i = 0; i < fields.length; i++) {
+                try {
+                    String fieldName = fields[i];
+                    if (fieldName != null && !fieldName.isEmpty()) {
+                        BeanUtils.setFieldValue(fieldName, bean, getCellValueObject(row, i));
+                    }
+                } catch (Exception e) {
+                    // TODO: handle exception
+                }
+            }
+        }
+    }
 
 }
