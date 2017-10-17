@@ -48,5 +48,13 @@
             <version>${dynatools.version}</version>
         </dependency>
     </dependencies>
+
+
+    <distributionManagement>
+        <repository>
+            <id>nexus</id>
+            <url>http://mde.dynamiaweb.com:8081/repository/releases/</url>
+        </repository>
+    </distributionManagement>
 	
 </project>
