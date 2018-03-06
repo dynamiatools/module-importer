@@ -5,23 +5,18 @@
  */
 package tools.dynamia.modules.importacion;
 
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
-import org.apache.poi.hssf.usermodel.HSSFCell;
-import org.apache.poi.hssf.util.HSSFCellUtil;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.DataFormatter;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.ss.usermodel.WorkbookFactory;
-
+import org.apache.poi.ss.usermodel.*;
 import tools.dynamia.commons.BeanUtils;
 import tools.dynamia.domain.ValidationError;
 import tools.dynamia.integration.ProgressMonitor;
+
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 /**
  * @author mario_2
@@ -31,10 +26,11 @@ public class ImportacionUtils {
     public static String getCellValue(Row row, int cellIndex) {
         String value = null;
         Cell cell = row.getCell(cellIndex);
+
         if (cell != null) {
-            if (cell.getCellType() == Cell.CELL_TYPE_ERROR) {
+            if (cell.getCellTypeEnum() == CellType.ERROR) {
                 value = null;
-            } else if (cell.getCellType() == Cell.CELL_TYPE_NUMERIC) {
+            } else if (cell.getCellTypeEnum() == CellType.NUMERIC) {
                 DataFormatter df = new DataFormatter();
                 value = df.formatCellValue(cell);
             } else {
@@ -155,6 +151,68 @@ public class ImportacionUtils {
                     // TODO: handle exception
                 }
             }
+        }
+    }
+
+    public static Cell findFirstRowCellByName(Sheet sheet, String columnName) {
+
+
+        for (Cell cell : sheet.getRow(0)) {
+            if (columnName.equalsIgnoreCase(cell.getStringCellValue())) {
+                return cell;
+            }
+        }
+
+        return null;
+
+    }
+
+    /**
+     * Get cell value using first row as column name
+     *
+     * @param row
+     * @param columnName
+     * @return
+     */
+    public static String getCellValue(Row row, String columnName) {
+        Cell cell = findFirstRowCellByName(row.getSheet(), columnName);
+        if (cell != null) {
+            return getCellValue(row, cell.getColumnIndex());
+        } else {
+            return null;
+        }
+
+    }
+
+    /**
+     * Get cell value using first row as column name
+     *
+     * @param row
+     * @param columnName
+     * @return
+     */
+    public static Object getCellValueObject(Row row, String columnName) {
+        Cell cell = findFirstRowCellByName(row.getSheet(), columnName);
+        if (cell != null) {
+            return getCellValueObject(row, cell.getColumnIndex());
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * Get cell date value using first row as column name
+     *
+     * @param row
+     * @param columnName
+     * @return
+     */
+    public static Date getCellValueDate(Row row, String columnName) {
+        Cell cell = findFirstRowCellByName(row.getSheet(), columnName);
+        if (cell != null) {
+            return getCellValueDate(row, cell.getColumnIndex());
+        } else {
+            return null;
         }
     }
 
