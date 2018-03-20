@@ -13,10 +13,7 @@ import tools.dynamia.integration.ProgressMonitor;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
-import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
 
 /**
  * @author mario_2
@@ -47,7 +44,8 @@ public class ImportacionUtils {
         Cell cell = row.getCell(cellIndex);
 
         if (cell != null) {
-            switch (cell.getCellTypeEnum()) {
+            CellType type = cell.getCellTypeEnum();
+            switch (type) {
                 case BLANK:
                     return null;
                 case BOOLEAN:
@@ -56,6 +54,15 @@ public class ImportacionUtils {
                     return cell.getStringCellValue();
                 case NUMERIC:
                     return cell.getNumericCellValue();
+                case FORMULA:
+                    String formula = cell.getCellFormula();
+                    if ("TRUE()".equalsIgnoreCase(formula)) {
+                        return Boolean.TRUE;
+                    } else if ("FALSE()".equalsIgnoreCase(formula)) {
+                        return Boolean.FALSE;
+                    } else {
+                        return cell.getCellFormula();
+                    }
                 default:
                     return cell.getStringCellValue();
             }
