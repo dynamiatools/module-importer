@@ -5,8 +5,9 @@ import tools.dynamia.domain.util.DomainUtils;
 
 import java.io.Serializable;
 
-@Descriptor(fields = {"row", "imported", "message", "entityId", "entityName"})
+
 public class ImportStatus implements Serializable {
+
 
     private long row;
     private boolean imported;
