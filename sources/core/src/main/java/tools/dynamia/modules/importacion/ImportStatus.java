@@ -21,7 +21,7 @@ public class ImportStatus implements Serializable {
         this.imported = imported;
         this.message = message;
         this.entity = entity;
-        this.entityId = DomainUtils.getJPAIdValue(entity);
+        this.entityId = DomainUtils.findEntityId(entity);
         this.entityName = entity.toString();
     }
 
