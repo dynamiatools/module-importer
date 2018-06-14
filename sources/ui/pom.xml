@@ -1,0 +1,60 @@
+<?xml version="1.0"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <artifactId>tools.dynamia.modules.importacion.parent</artifactId>
+        <groupId>tools.dynamia.modules</groupId>
+        <version>2.1.0.Final</version>
+    </parent>
+    <name>Dynamia Modules - Importacion UI (${project.version})</name>
+    <artifactId>tools.dynamia.modules.importacion.ui</artifactId>
+    <groupId>tools.dynamia.modules</groupId>
+    <version>2.1.0.Final</version>
+    <url>http://www.dynamia.tools/modules/importacion</url>
+	
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${maven.compiler}</version>
+                <configuration>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                    <encoding>${source.encoding}</encoding>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+    <dependencies>
+        <dependency>
+            <groupId>hsqldb</groupId>
+            <artifactId>hsqldb</artifactId>
+            <version>1.8.0.10</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>tools.dynamia</groupId>
+            <artifactId>tools.dynamia.zk.viewers</artifactId>
+            <version>${dynatools.version}</version>
+            <type>jar</type>
+        </dependency>
+
+        <dependency>
+            <groupId>tools.dynamia.modules</groupId>
+            <artifactId>tools.dynamia.modules.importacion</artifactId>
+            <version>2.1.0.Final</version>
+        </dependency>
+    </dependencies>
+
+
+    <distributionManagement>
+        <repository>
+            <id>nexus</id>
+            <url>http://nexus.dynamiaweb.com/repository/releases/</url>
+        </repository>
+    </distributionManagement>
+	
+</project>
