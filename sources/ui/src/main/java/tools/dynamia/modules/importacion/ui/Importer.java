@@ -45,7 +45,7 @@ import tools.dynamia.zk.viewers.table.TableView;
 
 /**
  *
- * @author mario_2
+ * @author Mario Serrano Leones
  */
 public class Importer extends Window implements ActionEventBuilder {
 
