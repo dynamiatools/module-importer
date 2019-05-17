@@ -7,9 +7,8 @@
         <groupId>tools.dynamia.modules</groupId>
         <version>2.1.0.Final</version>
     </parent>
-    <name>Dynamia Modules - Importacion Core (${project.version})</name>
+    <name>Dynamia Modules - Importer Core</name>
     <artifactId>tools.dynamia.modules.importacion</artifactId>
-    <groupId>tools.dynamia.modules</groupId>
     <version>2.1.0.Final</version>
     <url>http://www.dynamia.tools/modules/importacion</url>
 	

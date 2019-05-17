@@ -1,5 +1,5 @@
 view: table
-beanClass: tools.dynamia.modules.importacion.ImportStatus
+beanClass: tools.dynamia.modules.importer.ImportStatus
 autofields: false
 
 fields:

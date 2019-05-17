@@ -1,24 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>tools.dynamia.modules</groupId>
     <artifactId>tools.dynamia.modules.importacion.parent</artifactId>
     <packaging>pom</packaging>
     <version>2.1.0.Final</version>
-    <name>Dynamia Modules - Importacion  (${project.version})</name>
+    <name>Dynamia Modules - Importer</name>
     <url>http://www.dynamia.tools/modules/importacion</url>
 
 
     <modules>
         <module>core</module>
-	<module>ui</module>
+        <module>ui</module>
     </modules>
 
 
     <properties>
-		
+
         <dynatools.version>3.2.0.Final</dynatools.version>
-		
+
         <java.version>1.8</java.version>
         <maven.compiler>2.3.2</maven.compiler>
         <source.encoding>UTF-8</source.encoding>
@@ -44,7 +45,7 @@
     <distributionManagement>
         <repository>
             <id>nexus</id>
-           <url>http://nexus.dynamiaweb.com/repository/releases/</url>
+            <url>http://nexus.dynamiaweb.com/repository/releases/</url>
         </repository>
     </distributionManagement>
 
