@@ -2,12 +2,14 @@
 package tools.dynamia.modules.importer;
 
 import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.ss.util.CellReference;
 import tools.dynamia.commons.BeanUtils;
 import tools.dynamia.domain.ValidationError;
 import tools.dynamia.integration.ProgressMonitor;
 
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -219,4 +221,37 @@ public class ImportUtils {
         }
     }
 
+    /**
+     * Find cell using excel coordinator like A1 or D30
+     *
+     * @param sheet
+     * @param coordinate
+     * @return
+     */
+    public static Cell findCellByCoordinate(Sheet sheet, String coordinate) {
+        CellReference ref = new CellReference(coordinate);
+        Row row = sheet.getRow(ref.getRow());
+        if (row != null) {
+            return row.getCell(ref.getCol());
+        }
+        return null;
+    }
+
+    public static void setCellValue(Cell cell, Object value) {
+        if (cell != null && value != null) {
+            if (value instanceof String) {
+                cell.setCellValue((String) value);
+            } else if (value instanceof Boolean) {
+                cell.setCellValue(((Boolean) value));
+            } else if (value instanceof Number) {
+                cell.setCellValue(((Number) value).doubleValue());
+            } else if (value instanceof Date) {
+                cell.setCellValue((Date) value);
+            } else if (value instanceof Calendar) {
+                cell.setCellValue((Calendar) value);
+            } else {
+                cell.setCellValue(value.toString());
+            }
+        }
+    }
 }
