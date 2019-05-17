@@ -1,4 +1,3 @@
-
 package tools.dynamia.modules.importer;
 
 import org.apache.poi.ss.usermodel.*;
@@ -229,10 +228,14 @@ public class ImportUtils {
      * @return
      */
     public static Cell findCellByCoordinate(Sheet sheet, String coordinate) {
-        CellReference ref = new CellReference(coordinate);
-        Row row = sheet.getRow(ref.getRow());
-        if (row != null) {
-            return row.getCell(ref.getCol());
+        try {
+            CellReference ref = new CellReference(coordinate);
+            Row row = sheet.getRow(ref.getRow());
+            if (row != null) {
+                return row.getCell(ref.getCol());
+            }
+        } catch (IllegalArgumentException e) {
+            //ignore
         }
         return null;
     }
