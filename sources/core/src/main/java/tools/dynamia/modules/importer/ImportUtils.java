@@ -3,10 +3,14 @@ package tools.dynamia.modules.importer;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellReference;
 import tools.dynamia.commons.BeanUtils;
+import tools.dynamia.commons.logger.LoggingService;
+import tools.dynamia.commons.logger.SLF4JLoggingService;
 import tools.dynamia.domain.ValidationError;
+import tools.dynamia.domain.Validator;
 import tools.dynamia.integration.ProgressMonitor;
 
 import java.io.InputStream;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -16,6 +20,8 @@ import java.util.List;
  * @author Mario Serrano Leones
  */
 public class ImportUtils {
+
+    private final static LoggingService LOGGER = new SLF4JLoggingService(ImportUtils.class);
 
     public static String getCellValue(Row row, int cellIndex) {
         String value = null;
@@ -256,5 +262,99 @@ public class ImportUtils {
                 cell.setCellValue(value.toString());
             }
         }
+    }
+
+
+    public static BigDecimal parseBigDecimal(Row row, int cellIndex, BigDecimal defaultValue, String message) {
+        try {
+            Object value = ImportUtils.getCellValueObject(row, cellIndex);
+            if (value != null) {
+                if (value instanceof Number) {
+                    double precioVta = ((Number) value).doubleValue();
+                    return BigDecimal.valueOf(precioVta);
+                } else {
+                    return new BigDecimal(value.toString());
+                }
+            }
+        } catch (Exception e) {
+            LOGGER.error("Error parsing BigDecimal: " + message + "  Location: " + row + "  / " + cellIndex, e);
+        }
+        return defaultValue;
+    }
+
+    public static boolean parseBoolean(Row row, int cellIndex, boolean defaultValue, String message) {
+        try {
+            Object value = ImportUtils.getCellValueObject(row, cellIndex);
+            return value.toString().equalsIgnoreCase("si") || value.toString().equalsIgnoreCase("1") || value.toString().equalsIgnoreCase("true") || value.toString().equalsIgnoreCase("yes");
+        } catch (Exception e) {
+            LOGGER.error("Error parsing Boolean: " + message + "  Location: " + row + "  / " + cellIndex, e);
+        }
+        return defaultValue;
+    }
+
+    public static double parseDouble(Row row, int cellIndex, double defaultValue, String message) {
+        try {
+            Object value = ImportUtils.getCellValueObject(row, cellIndex);
+            if (value != null) {
+                if (value instanceof Number) {
+                    return ((Number) value).doubleValue();
+                } else {
+                    return Double.parseDouble(value.toString());
+                }
+            }
+        } catch (Exception e) {
+            LOGGER.error("Error parsing Double: " + message + "  Location: " + row + "  / " + cellIndex, e);
+        }
+        return defaultValue;
+    }
+
+    public static int parseInt(Row row, int cellIndex, int defaultValue, String message) {
+        try {
+            Object value = ImportUtils.getCellValueObject(row, cellIndex);
+            if (value != null) {
+                if (value instanceof Number) {
+                    return ((Number) value).intValue();
+                } else {
+                    return Integer.parseInt(value.toString());
+                }
+            }
+        } catch (Exception e) {
+            LOGGER.error("Error parsing Int: " + message + "  Location: " + row + "  / " + cellIndex, e);
+        }
+        return defaultValue;
+    }
+
+    public static String parseString(Row row, int cellIndex, String defaultValue, String message) {
+        try {
+            Object value = ImportUtils.getCellValueObject(row, cellIndex);
+            if (value != null) {
+                if (value instanceof String) {
+                    return (String) value;
+                } else if (value instanceof Number) {
+                    return String.valueOf(((Number) value).longValue());
+                } else {
+                    return value.toString();
+                }
+            }
+        } catch (Exception e) {
+            LOGGER.error("Error parsing String: " + message + "  Location: " + row + "  / " + cellIndex, e);
+        }
+        return defaultValue;
+    }
+
+    public static Date parseDate(Row row, int cellIndex, Date defaultValue, String message) {
+        try {
+            Object value = ImportUtils.getCellValueObject(row, cellIndex);
+            if (value != null) {
+                if (value instanceof Date) {
+                    return (Date) value;
+                } else if (value instanceof Number) {
+                    return DateUtil.getJavaDate(((Number) value).doubleValue());
+                }
+            }
+        } catch (Exception e) {
+            LOGGER.error("Error parsing Date: " + message + "  Location: " + row + "  / " + cellIndex, e);
+        }
+        return defaultValue;
     }
 }
