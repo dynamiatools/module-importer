@@ -63,8 +63,8 @@ public class GenerateImportFormatAction extends ImportAction {
                     cell.setCellStyle(headerRequiredStyle);
                 }
 
-                if (field.getDescription() != null) {
-                    Comment comment = drawing.createCellComment(drawing.createAnchor(0, 0, 0, 0, column, row.getRowNum(), column, row.getRowNum()));
+                if (field.getDescription() != null && !field.getDescription().isEmpty()) {
+                    Comment comment = drawing.createCellComment(drawing.createAnchor(100, 1000, 100, 1000, column, row.getRowNum(), column + 3, row.getRowNum() + 3));
                     comment.setString(new XSSFRichTextString(field.getDescription()));
                     cell.setCellComment(comment);
                 }
