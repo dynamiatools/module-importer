@@ -277,7 +277,7 @@ public class ImportUtils {
                 }
             }
         } catch (Exception e) {
-            LOGGER.error("Error parsing BigDecimal: " + message + "  Location: " + row + "  / " + cellIndex, e);
+            LOGGER.error("Error parsing BigDecimal: " + message + "  Location: " + row.getRowNum() + "  / " + cellIndex, e);
         }
         return defaultValue;
     }
@@ -287,7 +287,7 @@ public class ImportUtils {
             Object value = ImportUtils.getCellValueObject(row, cellIndex);
             return value.toString().equalsIgnoreCase("si") || value.toString().equalsIgnoreCase("1") || value.toString().equalsIgnoreCase("true") || value.toString().equalsIgnoreCase("yes");
         } catch (Exception e) {
-            LOGGER.error("Error parsing Boolean: " + message + "  Location: " + row + "  / " + cellIndex, e);
+            LOGGER.error("Error parsing Boolean: " + message + "  Location: " + row.getRowNum() + "  / " + cellIndex, e);
         }
         return defaultValue;
     }
@@ -303,7 +303,7 @@ public class ImportUtils {
                 }
             }
         } catch (Exception e) {
-            LOGGER.error("Error parsing Double: " + message + "  Location: " + row + "  / " + cellIndex, e);
+            LOGGER.error("Error parsing Double: " + message + "  Location: " + row.getRowNum() + "  / " + cellIndex, e);
         }
         return defaultValue;
     }
@@ -319,7 +319,7 @@ public class ImportUtils {
                 }
             }
         } catch (Exception e) {
-            LOGGER.error("Error parsing Int: " + message + "  Location: " + row + "  / " + cellIndex, e);
+            LOGGER.error("Error parsing Int: " + message + "  Location: " + row.getRowNum() + "  / " + cellIndex, e);
         }
         return defaultValue;
     }
@@ -337,7 +337,7 @@ public class ImportUtils {
                 }
             }
         } catch (Exception e) {
-            LOGGER.error("Error parsing String: " + message + "  Location: " + row + "  / " + cellIndex, e);
+            LOGGER.error("Error parsing String: " + message + "  Location: " + row.getRowNum() + "  / " + cellIndex, e);
         }
         return defaultValue;
     }
@@ -353,7 +353,7 @@ public class ImportUtils {
                 }
             }
         } catch (Exception e) {
-            LOGGER.error("Error parsing Date: " + message + "  Location: " + row + "  / " + cellIndex, e);
+            LOGGER.error("Error parsing Date: " + message + "  Location: " + row.getRowNum() + "  / " + cellIndex, e);
         }
         return defaultValue;
     }
