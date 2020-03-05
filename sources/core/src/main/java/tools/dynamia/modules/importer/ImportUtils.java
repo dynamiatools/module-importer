@@ -28,9 +28,9 @@ public class ImportUtils {
         Cell cell = row.getCell(cellIndex);
 
         if (cell != null) {
-            if (cell.getCellTypeEnum() == CellType.ERROR) {
+            if (cell.getCellType() == CellType.ERROR) {
                 value = null;
-            } else if (cell.getCellTypeEnum() == CellType.NUMERIC) {
+            } else if (cell.getCellType() == CellType.NUMERIC) {
                 DataFormatter df = new DataFormatter();
                 value = df.formatCellValue(cell);
             } else {
@@ -47,7 +47,7 @@ public class ImportUtils {
         Cell cell = row.getCell(cellIndex);
 
         if (cell != null) {
-            CellType type = cell.getCellTypeEnum();
+            CellType type = cell.getCellType();
             switch (type) {
                 case BLANK:
                     return null;
