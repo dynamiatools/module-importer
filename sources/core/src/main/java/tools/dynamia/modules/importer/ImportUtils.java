@@ -285,7 +285,9 @@ public class ImportUtils {
     public static boolean parseBoolean(Row row, int cellIndex, boolean defaultValue, String message) {
         try {
             Object value = ImportUtils.getCellValueObject(row, cellIndex);
-            return value.toString().equalsIgnoreCase("si") || value.toString().equalsIgnoreCase("1") || value.toString().equalsIgnoreCase("true") || value.toString().equalsIgnoreCase("yes");
+            if (value != null) {
+                return value.toString().equalsIgnoreCase("si") || value.toString().equalsIgnoreCase("1") || value.toString().equalsIgnoreCase("true") || value.toString().equalsIgnoreCase("yes");
+            }
         } catch (Exception e) {
             LOGGER.error("Error parsing Boolean: " + message + "  Location: " + row.getRowNum() + "  / " + cellIndex, e);
         }
