@@ -294,6 +294,18 @@ public class ImportUtils {
         return defaultValue;
     }
 
+    public static Boolean parseBooleanObject(Row row, int cellIndex, Boolean defaultValue, String message) {
+        try {
+            Object value = ImportUtils.getCellValueObject(row, cellIndex);
+            if (value != null) {
+                return value.toString().equalsIgnoreCase("si") || value.toString().equalsIgnoreCase("1") || value.toString().equalsIgnoreCase("true") || value.toString().equalsIgnoreCase("yes");
+            }
+        } catch (Exception e) {
+            LOGGER.error("Error parsing Boolean: " + message + "  Location: " + row.getRowNum() + "  / " + cellIndex, e);
+        }
+        return defaultValue;
+    }
+
     public static double parseDouble(Row row, int cellIndex, double defaultValue, String message) {
         try {
             Object value = ImportUtils.getCellValueObject(row, cellIndex);
@@ -310,7 +322,39 @@ public class ImportUtils {
         return defaultValue;
     }
 
+    public static Double parseDoubleObject(Row row, int cellIndex, Double defaultValue, String message) {
+        try {
+            Object value = ImportUtils.getCellValueObject(row, cellIndex);
+            if (value != null) {
+                if (value instanceof Number) {
+                    return ((Number) value).doubleValue();
+                } else {
+                    return Double.parseDouble(value.toString());
+                }
+            }
+        } catch (Exception e) {
+            LOGGER.error("Error parsing Double: " + message + "  Location: " + row.getRowNum() + "  / " + cellIndex, e);
+        }
+        return defaultValue;
+    }
+
     public static int parseInt(Row row, int cellIndex, int defaultValue, String message) {
+        try {
+            Object value = ImportUtils.getCellValueObject(row, cellIndex);
+            if (value != null) {
+                if (value instanceof Number) {
+                    return ((Number) value).intValue();
+                } else {
+                    return Integer.parseInt(value.toString());
+                }
+            }
+        } catch (Exception e) {
+            LOGGER.error("Error parsing Int: " + message + "  Location: " + row.getRowNum() + "  / " + cellIndex, e);
+        }
+        return defaultValue;
+    }
+
+    public static Integer parseIntObject(Row row, int cellIndex, Integer defaultValue, String message) {
         try {
             Object value = ImportUtils.getCellValueObject(row, cellIndex);
             if (value != null) {
