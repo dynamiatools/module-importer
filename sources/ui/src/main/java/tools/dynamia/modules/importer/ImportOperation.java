@@ -38,8 +38,8 @@ public abstract class ImportOperation extends LongOperation implements ProgressM
 	}
 
 	private void init() {
-		execute(() -> doImport());
-		onFinish(() -> importFinish());
+		execute(this::doImport);
+		onFinish(this::importFinish);
 	}
 
 	@Override
@@ -150,7 +150,7 @@ public abstract class ImportOperation extends LongOperation implements ProgressM
 
 	private boolean checkCurrentOperation() {
 		if (importer.getCurrentOperation() != null) {
-			UIMessages.showMessage("No puede ejecutar este proceso, existe una operacion de importer activa "
+			UIMessages.showMessage("No puede ejecutar este proceso, existe una operacion de importacion activa "
 					+ importer.getCurrentOperation().getName(), null);
 			return false;
 		} else {

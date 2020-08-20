@@ -34,6 +34,7 @@ import tools.dynamia.viewers.ViewDescriptor;
 import tools.dynamia.viewers.impl.DefaultViewDescriptor;
 import tools.dynamia.viewers.util.Viewers;
 import tools.dynamia.zk.actions.ActionToolbar;
+import tools.dynamia.zk.actions.ButtonActionRenderer;
 import tools.dynamia.zk.util.ZKUtil;
 import tools.dynamia.zk.viewers.table.TableView;
 
@@ -63,6 +64,7 @@ public class Importer extends Window implements ActionEventBuilder {
 
     public Importer() {
         buildLayout();
+        toolbar.setActionRenderer(new ButtonActionRenderer());
         addAction(new GenerateImportFormatAction("Descargar Formato"));
     }
 
@@ -77,7 +79,7 @@ public class Importer extends Window implements ActionEventBuilder {
         progress.setVisible(false);
         progress.setValue(0);
         progressLabel.setValue("");
-        Clients.clearBusy(layout.getCenter().getFirstChild());
+        clearBusy();
     }
 
     public void updateProgress(ProgressMonitor monitor) {
@@ -92,12 +94,20 @@ public class Importer extends Window implements ActionEventBuilder {
                 progress.setValue(value);
                 progressLabel.setValue(monitor.getMessage());
 
-                Clients.showBusy(layout.getCenter().getFirstChild(), monitor.getMessage());
+                showBusy(monitor.getMessage());
             } catch (Exception e) {
                 // TODO: handle exception
             }
         }
 
+    }
+
+    public void showBusy(String message) {
+        Clients.showBusy(layout.getCenter().getFirstChild(), message);
+    }
+
+    public void clearBusy() {
+        Clients.clearBusy(layout.getCenter().getFirstChild());
     }
 
     private void buildLayout() {
@@ -135,8 +145,11 @@ public class Importer extends Window implements ActionEventBuilder {
         });
 
         progress.setHflex("1");
+        progress.setVisible(false);
+        progress.setStyle("margin-top: 10px");
         controls.appendChild(btnProcesar);
         controls.appendChild(btnCancelar);
+        controls.appendChild(progress);
 
         setOperationStatus(false);
     }
@@ -145,7 +158,7 @@ public class Importer extends Window implements ActionEventBuilder {
         if (currentAction != null) {
 
             if (currentOperation != null) {
-                UIMessages.showMessage("Existe un proceso de importer ejecuntandose en este momento",
+                UIMessages.showMessage("Existe un proceso de importacion ejecuntandose en este momento",
                         MessageType.WARNING);
                 return;
             }
@@ -261,7 +274,7 @@ public class Importer extends Window implements ActionEventBuilder {
 
     private void setupRequiredField(Field field, boolean required) {
         if (required) {
-            field.addParam("header", MapBuilder.put("sclass", "red color-white"));
+            field.setLabel(field.getLabel()+"*");
         }
     }
 

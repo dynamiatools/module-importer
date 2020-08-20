@@ -107,7 +107,7 @@ public class ImportUtils {
                             lineas.add(bean);
                         }
                         filasOK++;
-                        monitor.setMessage("Fila " + row.getRowNum() + " importada Ok");
+                        monitor.setMessage("Fila " + row.getRowNum() + " de " + sheet.getLastRowNum() + " procesadas");
                     }
                 } catch (ValidationError validationError) {
                     monitor.setMessage(
@@ -115,6 +115,9 @@ public class ImportUtils {
                 }
             }
             monitor.setCurrent(row.getRowNum());
+            if (monitor.isStopped()) {
+                break;
+            }
         }
 
         return lineas;

@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.List;
 
 import org.zkoss.util.media.Media;
+import org.zkoss.zhtml.Col;
 import org.zkoss.zul.Fileupload;
 
 import tools.dynamia.actions.ActionRenderer;
@@ -18,67 +19,107 @@ import tools.dynamia.zk.actions.ToolbarbuttonActionRenderer;
 
 public abstract class ImportExcelAction<T> extends ImportAction {
 
-	private List<T> data;
+    private List<T> data;
+    private boolean showProgress = false;
 
-	public ImportExcelAction() {
-		setName("Import");
-		setImage("export-xlsx");
-		setAttribute("background", "#5cb85c");
-		setAttribute("color", "white");
-	}
+    public ImportExcelAction() {
+        setName("Import");
+        setImage("export-xlsx");
+        setAttribute("background", "#5cb85c");
+        setAttribute("color", "white");
+    }
 
-	public ImportExcelAction(String name) {
-		this();
-		setName(name);
-	}
+    public ImportExcelAction(String name) {
+        this();
+        setName(name);
+    }
 
-	@Override
-	public void actionPerformed(Importer win) {
-		Fileupload.get(event -> {
-			final Media media = event.getMedia();
-			if (media != null) {
-				String format = media.getFormat();
+    public ImportExcelAction(String name, boolean showProgress) {
+        this();
+        setName(name);
+        this.showProgress = showProgress;
+    }
 
-				if (format.endsWith("xls") || format.endsWith("xlsx")) {
-					try {
-						data = importFromExcel(media.getStreamData(), getMonitor());
-						win.initTable(data);
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
-				} else {
-					UIMessages.showMessage("El archivo debe ser en formato excel", MessageType.ERROR);
-				}
+    @Override
+    public void actionPerformed(Importer importer) {
+        Fileupload.get(event -> {
+            final Media media = event.getMedia();
+            if (media != null) {
+                String format = media.getFormat();
 
-			} else {
-				UIMessages.showMessage("Seleccione archivo de excel para importar", MessageType.ERROR);
-			}
-		});
-	}
+                if (format.endsWith("xls") || format.endsWith("xlsx")) {
+                    if (showProgress) {
+                        importer.initTable(Collections.emptyList());
+                        importer.showBusy("Importando");
+                        var op = new ImportOperation(getName(), importer) {
+                            @Override
+                            public void execute(ProgressMonitor monitor) throws Exception {
+                                setMonitor(monitor);
+                                ImportExcelAction.this.doImport(importer, media);
+                            }
 
-	public abstract List<T> importFromExcel(InputStream excelFile, ProgressMonitor monitor) throws Exception;
+                            @Override
+                            protected void onFinish(ProgressMonitor monitor) {
+                                importer.initTable(data);
+                            }
+                        };
 
-	@Override
-	public void processImportedData(Importer importer) {
-		CrudService crudService = Containers.get().findObject(CrudService.class);
+                        op.start();
 
-		crudService.executeWithinTransaction(() -> {
-			getData().forEach(d -> crudService.save(d));
-		});
-		UIMessages.showMessage("Import OK");
-		importer.clearTable();
-	}
+                    } else {
+                        doImport(importer, media);
+                        if (data != null) {
+                            importer.initTable(data);
+                        }
+                    }
+                } else {
+                    UIMessages.showMessage("El archivo debe ser en formato excel", MessageType.ERROR);
+                }
 
-	public List<T> getData() {
-		if (data == null) {
-			data = Collections.EMPTY_LIST;
-		}
-		return data;
-	}
+            } else {
+                UIMessages.showMessage("Seleccione archivo de excel para importar", MessageType.ERROR);
+            }
+        });
+    }
 
-	@Override
-	public ActionRenderer getRenderer() {
-		return new ToolbarbuttonActionRenderer(true);
-	}
+    protected void doImport(Importer win, Media media) {
+        try {
+            data = importFromExcel(media.getStreamData(), getMonitor());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
+    public abstract List<T> importFromExcel(InputStream excelFile, ProgressMonitor monitor) throws Exception;
+
+    @Override
+    public void processImportedData(Importer importer) {
+        CrudService crudService = Containers.get().findObject(CrudService.class);
+
+        crudService.executeWithinTransaction(() -> {
+            getData().forEach(crudService::save);
+        });
+        UIMessages.showMessage("Import OK");
+        importer.clearTable();
+    }
+
+    public List<T> getData() {
+        if (data == null) {
+            data = Collections.EMPTY_LIST;
+        }
+        return data;
+    }
+
+    @Override
+    public ActionRenderer getRenderer() {
+        return new ToolbarbuttonActionRenderer(true);
+    }
+
+    public boolean isShowProgress() {
+        return showProgress;
+    }
+
+    public void setShowProgress(boolean showProgress) {
+        this.showProgress = showProgress;
+    }
 }
