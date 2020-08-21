@@ -107,8 +107,8 @@ public class ImportUtils {
                             lineas.add(bean);
                         }
                         filasOK++;
-                        monitor.setMessage("Fila " + row.getRowNum() + " de " + sheet.getLastRowNum() + " procesadas");
                     }
+                    monitor.setMessage("Fila " + row.getRowNum() + " de " + sheet.getLastRowNum() + " procesadas");
                 } catch (ValidationError validationError) {
                     monitor.setMessage(
                             "Error importando fila " + row.getRowNum() + ". " + validationError.getMessage());

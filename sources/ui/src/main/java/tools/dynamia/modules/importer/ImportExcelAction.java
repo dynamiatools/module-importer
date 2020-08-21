@@ -60,7 +60,7 @@ public abstract class ImportExcelAction<T> extends ImportAction {
 
                             @Override
                             protected void onFinish(ProgressMonitor monitor) {
-                                importer.initTable(data);
+                                showData(importer);
                             }
                         };
 
@@ -68,9 +68,7 @@ public abstract class ImportExcelAction<T> extends ImportAction {
 
                     } else {
                         doImport(importer, media);
-                        if (data != null) {
-                            importer.initTable(data);
-                        }
+                        showData(importer);
                     }
                 } else {
                     UIMessages.showMessage("El archivo debe ser en formato excel", MessageType.ERROR);
@@ -80,6 +78,13 @@ public abstract class ImportExcelAction<T> extends ImportAction {
                 UIMessages.showMessage("Seleccione archivo de excel para importar", MessageType.ERROR);
             }
         });
+    }
+
+    private void showData(Importer importer) {
+        importer.initTable(data);
+        if (data == null || data.isEmpty()) {
+            UIMessages.showMessage("No se obtuvieron datos validos", MessageType.WARNING);
+        }
     }
 
     protected void doImport(Importer win, Media media) {
