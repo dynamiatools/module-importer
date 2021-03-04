@@ -45,7 +45,7 @@
     <distributionManagement>
         <repository>
             <id>nexus</id>
-            <url>http://nexus.dynamia.tools/repository/releases/</url>
+            <url>https://nexus.dynamia.tools/repository/releases/</url>
         </repository>
     </distributionManagement>
 

@@ -1,5 +1,6 @@
 <?xml version="1.0"?>
-<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+         xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <modelVersion>4.0.0</modelVersion>
     <parent>
@@ -11,7 +12,7 @@
     <artifactId>tools.dynamia.modules.importer.ui</artifactId>
     <version>2.3.0.Final</version>
     <url>http://www.dynamia.tools/modules/importacion</url>
-	
+
     <build>
         <plugins>
             <plugin>
@@ -52,8 +53,8 @@
     <distributionManagement>
         <repository>
             <id>nexus</id>
-            <url>http://nexus.dynamia.tools/repository/releases/</url>
+            <url>https://nexus.dynamia.tools/repository/releases/</url>
         </repository>
     </distributionManagement>
-	
+
 </project>
