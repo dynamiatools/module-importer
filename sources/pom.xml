@@ -7,7 +7,34 @@
     <packaging>pom</packaging>
     <version>2.3.0.Final</version>
     <name>Dynamia Modules - Importer</name>
-    <url>http://www.dynamia.tools/modules/importacion</url>
+    <inceptionYear>2019</inceptionYear>
+    <url>https://www.dynamia.tools/modules/email</url>
+
+    <organization>
+        <name>Dynamia Soluciones IT SAS</name>
+        <url>http://www.dynamiasoluciones.com</url>
+    </organization>
+
+    <developers>
+        <developer>
+            <name>Mario Serrano Leones</name>
+            <email>mario@dynamiasoluciones.com</email>
+            <organization>Dynamia Soluciones IT</organization>
+            <organizationUrl>https://www.dynamiasoluciones.com</organizationUrl>
+        </developer>
+    </developers>
+
+    <licenses>
+        <license>
+            <name>GNU Lesser General Public License (LGPL v3)</name>
+            <url>https://www.gnu.org/licenses/lgpl-3.0.en.html</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <scm>
+        <url>https://github.com/dynamia-projects/module-importer</url>
+    </scm>
 
 
     <modules>
@@ -17,9 +44,7 @@
 
 
     <properties>
-
         <dynamiatools.version>4.0.0.Final</dynamiatools.version>
-
         <java.version>11</java.version>
         <maven.compiler>3.8.1</maven.compiler>
         <source.encoding>UTF-8</source.encoding>
@@ -43,10 +68,44 @@
 
 
     <distributionManagement>
+        <snapshotRepository>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+        </snapshotRepository>
         <repository>
-            <id>nexus</id>
-            <url>https://nexus.dynamia.tools/repository/releases/</url>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
         </repository>
     </distributionManagement>
+
+    <profiles>
+        <profile>
+            <id>release-sign-artifacts</id>
+            <activation>
+                <property>
+                    <name>performRelease</name>
+                    <value>true</value>
+                </property>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                        <version>1.5</version>
+                        <executions>
+                            <execution>
+                                <id>sign-artifacts</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>sign</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 
 </project>
