@@ -1,4 +1,21 @@
 <?xml version="1.0"?>
+<!--
+  ~ Copyright (C) 2021 Dynamia Soluciones IT S.A.S - NIT 900302344-1
+  ~ Colombia / South America
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
 <project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
          xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
@@ -6,11 +23,11 @@
     <parent>
         <artifactId>tools.dynamia.modules.importer.parent</artifactId>
         <groupId>tools.dynamia.modules</groupId>
-        <version>2.3.0.Final</version>
+        <version>2.4.0</version>
     </parent>
     <name>Dynamia Modules - Importer UI</name>
     <artifactId>tools.dynamia.modules.importer.ui</artifactId>
-    <version>2.3.0.Final</version>
+    <version>2.4.0</version>
     <url>http://www.dynamia.tools/modules/importacion</url>
 
     <build>
@@ -45,16 +62,9 @@
         <dependency>
             <groupId>tools.dynamia.modules</groupId>
             <artifactId>tools.dynamia.modules.importer</artifactId>
-            <version>2.3.0.Final</version>
+            <version>2.4.0</version>
         </dependency>
     </dependencies>
 
-
-    <distributionManagement>
-        <repository>
-            <id>nexus</id>
-            <url>https://nexus.dynamia.tools/repository/releases/</url>
-        </repository>
-    </distributionManagement>
 
 </project>

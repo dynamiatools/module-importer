@@ -1,3 +1,20 @@
+/*
+ * Copyright (C) 2021 Dynamia Soluciones IT S.A.S - NIT 900302344-1
+ * Colombia / South America
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package tools.dynamia.modules.importer;
 
 import org.apache.poi.ss.usermodel.*;
@@ -6,7 +23,6 @@ import tools.dynamia.commons.BeanUtils;
 import tools.dynamia.commons.logger.LoggingService;
 import tools.dynamia.commons.logger.SLF4JLoggingService;
 import tools.dynamia.domain.ValidationError;
-import tools.dynamia.domain.Validator;
 import tools.dynamia.integration.ProgressMonitor;
 
 import java.io.InputStream;
@@ -85,6 +101,17 @@ public class ImportUtils {
         return null;
     }
 
+    /**
+     * Read an Excel file to parse to a POJO classes. You need pass a {@link ImportBeanParser} to map excel cell to
+     * POJO properties.
+     * @param clazz
+     * @param excelFile
+     * @param monitor
+     * @param parser
+     * @param <T>
+     * @return
+     * @throws Exception
+     */
     public static <T> List<T> importExcel(Class<T> clazz, InputStream excelFile, ProgressMonitor monitor,
                                           ImportBeanParser<T> parser) throws Exception {
         if (monitor == null) {
@@ -98,7 +125,7 @@ public class ImportUtils {
         int filasOK = 0;
         for (Row row : sheet) {
             if (row.getRowNum() == 0) {
-                monitor.setMessage("Procesando Encabezados");
+                monitor.setMessage("Processing header");
             } else {
                 try {
                     T bean = parser.parse(row);
@@ -123,6 +150,13 @@ public class ImportUtils {
         return lineas;
     }
 
+    /**
+     * Read and excel file with a reader to process each rows and cells
+     * @param excelFile
+     * @param monitor
+     * @param reader
+     * @throws Exception
+     */
     public static void readExcel(InputStream excelFile, ProgressMonitor monitor, ImportReader reader) throws Exception {
 
         if (monitor == null) {
@@ -152,6 +186,12 @@ public class ImportUtils {
         }
     }
 
+    /**
+     * Try to parse an Excel row file to a POJO properties using fields
+     * @param row
+     * @param bean
+     * @param fields
+     */
     public static void tryToParse(Row row, Object bean, String... fields) {
         if (fields != null && fields.length > 0) {
             for (int i = 0; i < fields.length; i++) {
@@ -167,6 +207,13 @@ public class ImportUtils {
         }
     }
 
+    /**
+     * Find the cell of the first row that value is equal to columnName. This is useful for find header in the Excel file
+     *
+     * @param sheet
+     * @param columnName
+     * @return
+     */
     public static Cell findFirstRowCellByName(Sheet sheet, String columnName) {
 
 
