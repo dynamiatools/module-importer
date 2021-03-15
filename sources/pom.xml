@@ -26,6 +26,7 @@
     <name>Dynamia Modules - Importer</name>
     <inceptionYear>2019</inceptionYear>
     <url>https://dynamia.tools/modules/importer</url>
+    <description>This extension allow you easily import and process Excel files</description>
 
     <organization>
         <name>Dynamia Soluciones IT SAS</name>
