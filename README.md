@@ -108,3 +108,6 @@ class ImportPeopleAction extends ImportExcelAction<Person> {
     }
 }
 ```
+## License
+
+DynamiaTools Importer is available under Apache 2 License
