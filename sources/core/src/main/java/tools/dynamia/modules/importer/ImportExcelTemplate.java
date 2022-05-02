@@ -22,9 +22,8 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -34,11 +33,28 @@ import java.util.Map;
  */
 public class ImportExcelTemplate {
 
-    private File excelTemplate;
+
+    private InputStream excelTemplate;
     private Map<String, Object> variables = new HashMap<>();
 
-    public ImportExcelTemplate(File excelTemplate) {
+    public ImportExcelTemplate(InputStream excelTemplate) {
         this.excelTemplate = excelTemplate;
+    }
+
+    public ImportExcelTemplate(File excelTemplate) {
+        try {
+            this.excelTemplate = new FileInputStream(excelTemplate);
+        } catch (FileNotFoundException e) {
+            throw new ImportOperationException("Invalid file", e);
+        }
+    }
+
+    public ImportExcelTemplate(URL url) {
+        try {
+            this.excelTemplate = url.openStream();
+        } catch (IOException e) {
+            throw new ImportOperationException("Error opening stream from URL", e);
+        }
     }
 
     public void addVar(String cellName, Object value) {
