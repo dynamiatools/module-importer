@@ -18,28 +18,12 @@
 
 package tools.dynamia.modules.importer.ui;
 
-import java.io.File;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zk.ui.util.Clients;
-import org.zkoss.zul.Borderlayout;
-import org.zkoss.zul.Button;
-import org.zkoss.zul.Center;
-import org.zkoss.zul.East;
-import org.zkoss.zul.Hlayout;
-import org.zkoss.zul.Label;
-import org.zkoss.zul.North;
-import org.zkoss.zul.Progressmeter;
-import org.zkoss.zul.South;
-import org.zkoss.zul.Window;
-
+import org.zkoss.zul.*;
 import tools.dynamia.actions.ActionEvent;
 import tools.dynamia.actions.ActionEventBuilder;
-import tools.dynamia.commons.MapBuilder;
 import tools.dynamia.commons.StringUtils;
 import tools.dynamia.integration.ProgressMonitor;
 import tools.dynamia.modules.importer.ImportAction;
@@ -54,6 +38,10 @@ import tools.dynamia.zk.actions.ActionToolbar;
 import tools.dynamia.zk.actions.ButtonActionRenderer;
 import tools.dynamia.zk.util.ZKUtil;
 import tools.dynamia.zk.viewers.table.TableView;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author Mario Serrano Leones
@@ -340,5 +328,9 @@ public class Importer extends Window implements ActionEventBuilder {
 
     public void setFormatFileName(String formatFileName) {
         this.formatFileName = formatFileName;
+    }
+
+    public String[] getColumnsFieldsName(){
+        return tableDescriptor.getFields().stream().map(Field::getName).toArray(String[]::new);
     }
 }

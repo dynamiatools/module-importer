@@ -104,6 +104,7 @@ public class ImportUtils {
     /**
      * Read an Excel file to parse to a POJO classes. You need pass a {@link ImportBeanParser} to map excel cell to
      * POJO properties.
+     *
      * @param clazz
      * @param excelFile
      * @param monitor
@@ -152,6 +153,7 @@ public class ImportUtils {
 
     /**
      * Read and excel file with a reader to process each rows and cells
+     *
      * @param excelFile
      * @param monitor
      * @param reader
@@ -188,6 +190,7 @@ public class ImportUtils {
 
     /**
      * Try to parse an Excel row file to a POJO properties using fields
+     *
      * @param row
      * @param bean
      * @param fields
@@ -198,7 +201,18 @@ public class ImportUtils {
                 try {
                     String fieldName = fields[i];
                     if (fieldName != null && !fieldName.isEmpty()) {
-                        BeanUtils.setFieldValue(fieldName, bean, getCellValueObject(row, i));
+                        var value = getCellValueObject(row, i);
+                        if (value instanceof Double) {
+                            var field = BeanUtils.getPropertyInfo(bean.getClass(), fieldName);
+                            if (field.is(BigDecimal.class)) {
+                                value = BigDecimal.valueOf(((Number) value).doubleValue());
+                            } else if (field.is(Integer.class) || field.is(int.class)) {
+                                value = ((Double) value).intValue();
+                            } else if (field.is(Long.class) || field.is(long.class)) {
+                                value = ((Double) value).longValue();
+                            }
+                        }
+                        BeanUtils.setFieldValue(fieldName, bean, value);
                     }
                 } catch (Exception e) {
                     // TODO: handle exception
