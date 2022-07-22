@@ -60,7 +60,7 @@ public class Importer extends Window implements ActionEventBuilder {
     private Button btnProcesar;
     private Button btnCancelar;
 
-    private ViewDescriptor tableDescriptor = new DefaultViewDescriptor(null, "table");
+    private DefaultViewDescriptor tableDescriptor;
 
     private boolean operationRunning;
 
@@ -71,6 +71,12 @@ public class Importer extends Window implements ActionEventBuilder {
         buildLayout();
         toolbar.setActionRenderer(new ButtonActionRenderer());
         addAction(new GenerateImportFormatAction("Descargar Formato"));
+        tableDescriptor =  new DefaultViewDescriptor(null, "table");
+        updateDescriptorId();
+    }
+
+    private void updateDescriptorId() {
+        tableDescriptor.setId("Importer_"+getFormatFileName());
     }
 
     @Override
@@ -328,6 +334,7 @@ public class Importer extends Window implements ActionEventBuilder {
 
     public void setFormatFileName(String formatFileName) {
         this.formatFileName = formatFileName;
+        updateDescriptorId();
     }
 
     public String[] getColumnsFieldsName(){
