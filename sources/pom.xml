@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  ~ Copyright (C) 2021 Dynamia Soluciones IT S.A.S - NIT 900302344-1
+  ~ Copyright (C) 2023 Dynamia Soluciones IT S.A.S - NIT 900302344-1
   ~ Colombia / South America
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
@@ -25,7 +25,7 @@
     <groupId>tools.dynamia.modules</groupId>
     <artifactId>tools.dynamia.modules.importer.parent</artifactId>
     <packaging>pom</packaging>
-    <version>2.6.0</version>
+    <version>2.7.0</version>
     <name>Dynamia Modules - Importer</name>
     <inceptionYear>2019</inceptionYear>
     <url>https://dynamia.tools/modules/importer</url>
@@ -33,7 +33,7 @@
 
     <organization>
         <name>Dynamia Soluciones IT SAS</name>
-        <url>http://www.dynamiasoluciones.com</url>
+        <url>https://www.dynamiasoluciones.com</url>
     </organization>
 
     <developers>
@@ -65,9 +65,9 @@
 
 
     <properties>
-        <dynamiatools.version>4.1.0</dynamiatools.version>
+        <dynamiatools.version>4.2.0</dynamiatools.version>
         <java.version>11</java.version>
-        <maven.compiler>3.8.1</maven.compiler>
+        <maven.compiler>3.11.0</maven.compiler>
         <source.encoding>UTF-8</source.encoding>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
