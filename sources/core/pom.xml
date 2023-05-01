@@ -23,11 +23,11 @@
     <parent>
         <artifactId>tools.dynamia.modules.importer.parent</artifactId>
         <groupId>tools.dynamia.modules</groupId>
-        <version>2.7.0</version>
+        <version>3.0.0</version>
     </parent>
     <name>Dynamia Modules - Importer Core</name>
     <artifactId>tools.dynamia.modules.importer</artifactId>
-    <version>2.7.0</version>
+    <version>3.0.0</version>
     <url>http://www.dynamia.tools/modules/importer</url>
 
     <build>
