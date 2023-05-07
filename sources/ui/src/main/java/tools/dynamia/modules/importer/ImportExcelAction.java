@@ -22,7 +22,6 @@ import java.util.Collections;
 import java.util.List;
 
 import org.zkoss.util.media.Media;
-import org.zkoss.zhtml.Col;
 import org.zkoss.zul.Fileupload;
 
 import tools.dynamia.actions.ActionRenderer;

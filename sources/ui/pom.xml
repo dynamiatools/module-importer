@@ -54,9 +54,8 @@
 
         <dependency>
             <groupId>tools.dynamia</groupId>
-            <artifactId>tools.dynamia.zk.viewers</artifactId>
+            <artifactId>tools.dynamia.zk</artifactId>
             <version>${dynamiatools.version}</version>
-            <type>jar</type>
         </dependency>
 
         <dependency>
