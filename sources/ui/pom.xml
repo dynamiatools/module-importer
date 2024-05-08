@@ -23,11 +23,11 @@
     <parent>
         <artifactId>tools.dynamia.modules.importer.parent</artifactId>
         <groupId>tools.dynamia.modules</groupId>
-        <version>3.0.1</version>
+        <version>3.1.1</version>
     </parent>
     <name>Dynamia Modules - Importer UI</name>
     <artifactId>tools.dynamia.modules.importer.ui</artifactId>
-    <version>3.0.1</version>
+    <version>3.1.1</version>
     <url>http://www.dynamia.tools/modules/importacion</url>
 
     <build>
@@ -39,7 +39,8 @@
                 <configuration>
                     <source>${java.version}</source>
                     <target>${java.version}</target>
-                    <encoding>${source.encoding}</encoding>
+                     <encoding>${source.encoding}</encoding>
+                    <parameters>true</parameters>
                 </configuration>
             </plugin>
         </plugins>
@@ -61,7 +62,7 @@
         <dependency>
             <groupId>tools.dynamia.modules</groupId>
             <artifactId>tools.dynamia.modules.importer</artifactId>
-            <version>3.0.1</version>
+            <version>3.1.1</version>
         </dependency>
     </dependencies>
 
