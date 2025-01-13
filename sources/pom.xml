@@ -65,7 +65,7 @@
 
 
     <properties>
-        <dynamiatools.version>5.2.0</dynamiatools.version>
+        <dynamiatools.version>5.3.1</dynamiatools.version>
         <java.version>17</java.version>
         <maven.compiler>3.13.0</maven.compiler>
         <source.encoding>UTF-8</source.encoding>
@@ -88,7 +88,7 @@
             <plugin>
                 <groupId>org.sonatype.plugins</groupId>
                 <artifactId>nexus-staging-maven-plugin</artifactId>
-                <version>1.6.13</version>
+                <version>1.7.0</version>
                 <extensions>true</extensions>
                 <configuration>
                     <serverId>ossrh</serverId>
