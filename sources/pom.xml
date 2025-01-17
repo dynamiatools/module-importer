@@ -25,7 +25,7 @@
     <groupId>tools.dynamia.modules</groupId>
     <artifactId>tools.dynamia.modules.importer.parent</artifactId>
     <packaging>pom</packaging>
-    <version>3.1.1</version>
+    <version>3.2.0</version>
     <name>Dynamia Modules - Importer</name>
     <inceptionYear>2019</inceptionYear>
     <url>https://dynamia.tools/modules/importer</url>
@@ -65,7 +65,7 @@
 
 
     <properties>
-        <dynamiatools.version>5.1.1</dynamiatools.version>
+        <dynamiatools.version>5.3.1</dynamiatools.version>
         <java.version>17</java.version>
         <maven.compiler>3.13.0</maven.compiler>
         <source.encoding>UTF-8</source.encoding>
@@ -88,7 +88,7 @@
             <plugin>
                 <groupId>org.sonatype.plugins</groupId>
                 <artifactId>nexus-staging-maven-plugin</artifactId>
-                <version>1.6.13</version>
+                <version>1.7.0</version>
                 <extensions>true</extensions>
                 <configuration>
                     <serverId>ossrh</serverId>
@@ -139,7 +139,7 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-gpg-plugin</artifactId>
-                        <version>1.5</version>
+                        <version>3.1.0</version>
                         <executions>
                             <execution>
                                 <id>sign-artifacts</id>
