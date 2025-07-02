@@ -23,11 +23,11 @@
     <parent>
         <artifactId>tools.dynamia.modules.importer.parent</artifactId>
         <groupId>tools.dynamia.modules</groupId>
-        <version>3.2.0</version>
+        <version>3.3.0</version>
     </parent>
     <name>Dynamia Modules - Importer UI</name>
     <artifactId>tools.dynamia.modules.importer.ui</artifactId>
-    <version>3.2.0</version>
+    <version>3.3.0</version>
     <url>http://www.dynamia.tools/modules/importacion</url>
 
     <build>
@@ -62,7 +62,7 @@
         <dependency>
             <groupId>tools.dynamia.modules</groupId>
             <artifactId>tools.dynamia.modules.importer</artifactId>
-            <version>3.2.0</version>
+            <version>3.3.0</version>
         </dependency>
     </dependencies>
 
