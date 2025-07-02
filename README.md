@@ -1,5 +1,5 @@
 [![Maven Central](https://img.shields.io/maven-central/v/tools.dynamia.modules/tools.dynamia.modules.importer)](https://search.maven.org/search?q=tools.dynamia.modules.importer)
-![Java Version Required](https://img.shields.io/badge/java-17-blue)
+![Java Version Required](https://img.shields.io/badge/java-21-blue)
 [![Maven Build](https://github.com/dynamiatools/module-importer/actions/workflows/maven.yml/badge.svg)](https://github.com/dynamiatools/module-importer/actions/workflows/maven.yml)
 
 # Importer Module
@@ -25,7 +25,7 @@ Add the following dependencies to project classpath
 <dependency>
     <groupId>tools.dynamia.modules</groupId>
     <artifactId>tools.dynamia.modules.importer</artifactId>
-    <version>3.1.0</version>
+    <version>3.3.0</version>
 </dependency>
 ```
 
@@ -34,7 +34,7 @@ Add the following dependencies to project classpath
 <dependency>
     <groupId>tools.dynamia.modules</groupId>
     <artifactId>tools.dynamia.modules.importer.ui</artifactId>
-    <version>3.1.0</version>
+    <version>3.3.0</version>
 </dependency>
 
 ```
@@ -42,8 +42,8 @@ Add the following dependencies to project classpath
 **Gradle**
 
 ```groovy
-compile 'tools.dynamia.modules:tools.dynamia.modules.importer:3.1.0'
-compile 'tools.dynamia.modules:tools.dynamia.modules.importer.ui:3.1.0'
+compile 'tools.dynamia.modules:tools.dynamia.modules.importer:3.3.0'
+compile 'tools.dynamia.modules:tools.dynamia.modules.importer.ui:3.3.0'
 ```
 
 ## Usage
